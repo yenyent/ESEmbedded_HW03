@@ -49,8 +49,39 @@ This is the hw03 sample. Please follow the steps below.
 
 --------------------
 
-- [x] **If you volunteer to give the presentation next week, check this.**
+- [] **If you volunteer to give the presentation next week, check this.**
 
 --------------------
 
-**★★★ Please take your note here ★★★**
+```cpp=
+int plus(int a, int b,int c,int d,int e){ return a+b+c+d+e; }
+void reset_handler(void)
+{
+	plus(1,2,3,4,5);
+	while (1)
+		;
+}
+```
+實驗發現當引數為五個時系統自動將最後一個引數（5）先是放進r3後再存入stack兒其他剩下的四個引數(1,2,3,4)就分別放進r0到r3
+
+![](https://i.imgur.com/xoSGyuf.png)
+![](https://i.imgur.com/MXIgsfB.png)
+
+
+```cpp=
+int plus(int a, int b,int c,int d){ return a+b+c+d; }
+void reset_handler(void)
+{
+	plus(1,2,3,4);
+	while (1)
+		;
+}
+
+```
+
+實驗發現當引數為四個時系統自動將四個引數(1,2,3,4)分別放進r0到r3
+
+![](https://i.imgur.com/3U9YDPn.png)
+![](https://i.imgur.com/RFLU1vY.png)
+
+查閱ARM AAPCS資料後的結論是資料傳送到暫存器R0～R3中。如果引數多於4個，將剩餘的字資料傳送堆疊中
